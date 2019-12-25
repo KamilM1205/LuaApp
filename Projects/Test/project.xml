@@ -1,0 +1,7 @@
+<project name="Test" version="1.0">
+<LuaApp version="1.0b">
+    <use name="PC">true</use>
+    <use name="Android">true</use>
+    <use name="Assets">true</use>
+</LuaApp>
+</project>
