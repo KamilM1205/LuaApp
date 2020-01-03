@@ -21,6 +21,8 @@ func RegisterLabelType(L *lua.LState) int {
 
 var labelMethods = map[string]lua.LGFunction{
 	"setText": luaSetText,
+	"setHAlign": luaSetHAlign,
+	"setVAlign": luaSetVAlign,
 	"getParent": luaGetParent,
 }
 
@@ -50,6 +52,20 @@ func checkLabel(L *lua.LState) *Label{
 func luaSetText(L *lua.LState) int {
 	l := checkLabel(L)
 	l.Label.SetText(L.ToString(1))
+	return 1
+}
+
+func luaSetHAlign(L *lua.LState) int {
+	l := checkLabel(L)
+	ud := L.ToUserData(2)
+	l.Label.SetHAlign(ud.Value.(gtk.Align))
+	return 1
+}
+
+func luaSetVAlign(L *lua.LState) int {
+	l := checkLabel(L)
+	ud := L.ToUserData(2)
+	l.Label.SetVAlign(ud.Value.(gtk.Align))
 	return 1
 }
 

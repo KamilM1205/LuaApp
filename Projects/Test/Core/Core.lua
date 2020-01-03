@@ -7,7 +7,7 @@ end
 
 function Init() 
     screen = Screen.new()
-    h = Horizontal.new()
+    h = Vertical.new()
     edt = LineEdit.new("gfhg")
     btn1 = Button.new("1")
     btn2 = Button.new("2")

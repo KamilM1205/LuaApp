@@ -31,17 +31,47 @@ type App struct {
 	Settings      *Uses  `xml:"use"`
 }
 
+const (
+	androidMain string = ``
+	pcMain string = `pc = require("pc")
+
+	function Init()
+		pc.SetSize(800, 600)
+		pc.SetTitle("Test")
+		pc.Run()
+	end
+	
+	pc.Init()`
+	coreMain string = ``
+)
+
 //NewProject функция для создания нового LuaApp проекта
 func NewProject(projectName string, projectVersion string, android bool, pc bool, assets bool) error {
 	err := os.Mkdir("Projects/"+projectName, os.ModePerm)
 	if err != nil {
 		return err
 	}
+
+	err = os.Mkdir("Projects/"+projectName+"/Core", os.ModePerm)
+	if err != nil {
+		return err
+	}
+	file, err := os.Create("Projects/"+projectName+"/Core/" + "Core.lua") 
+	if err != nil {
+		return err
+	}
+	file.Close()
+
 	if android {
 		err := os.Mkdir("Projects/"+projectName+"/Android", os.ModePerm)
 		if err != nil {
 			return err
 		}
+		file, err := os.Create("Projects/"+projectName+"/Android/" + "main.lua") 
+		if err != nil {
+			return err
+		}
+		file.Close()
 	}
 
 	if pc {
@@ -49,6 +79,11 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 		if err != nil {
 			return err
 		}
+		file, err := os.Create("Projects/"+projectName+"/PC/" + "main.lua") 
+		if err != nil {
+			return err
+		}
+		file.Close()
 	}
 
 	if assets {
@@ -58,7 +93,7 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 		}
 	}
 
-	file, err := os.Create("Projects/" + projectName + "/project.xml")
+	file, err = os.Create("Projects/" + projectName + "/project.xml")
 	if err != nil {
 		return err
 	}
@@ -99,20 +134,20 @@ func OpenProject(filename string) (*Project, error) {
 }
 
 func IsProject(projectName string) (bool, error) {
-	f, err := ioutil.ReadDir(projectName)
+	f, err := ioutil.ReadDir("Projects/" + projectName)
+	if err != nil {
+		return false, err
+	}
 	for _, file := range f {
 		if !file.IsDir() && file.Name() == "project.xml" {
 			return true, nil
 		}
 	}
-	if err != nil {
-		return false, err
-	}
 	return false, errors.New("The " + projectName + " directory does not have a project.xml file.")
 }
 
 //SearchProjects функция, которая возвращает список проектов
-func SearchProjects() ([]string, error) {
+func SearchProjects() (*[]string, error) {
 	files, err := ioutil.ReadDir("Projects/")
 	if err != nil {
 		return nil, err
@@ -131,7 +166,7 @@ func SearchProjects() ([]string, error) {
 			}
 		}
 	}
-	return projectList, nil
+	return &projectList, nil
 }
 
 func projectUnmarshal(code string) (*Project, error) {

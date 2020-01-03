@@ -28,6 +28,8 @@ func RegisterButtonType(L *lua.LState) int {
 var buttonMethods = map[string]lua.LGFunction{
 	"setText":   luaSetText,
 	"setClick":  luaSetClick,
+	"setHAlign": luaSetHAlign,
+	"setVAlign": luaSetVAlign,
 	"getParent": luaGetParent,
 	"setEnable": luaSetEnable,
 }
@@ -90,6 +92,20 @@ func luaSetClick(L *lua.LState) int {
 func luaSetEnable(L *lua.LState) int {
 	b := checkButton(L)
 	b.Button.SetSensitive(L.ToBool(2))
+	return 1
+}
+
+func luaSetHAlign(L *lua.LState) int {
+	b := checkButton(L)
+	ud := L.ToUserData(2)
+	b.Button.SetHAlign(ud.Value.(gtk.Align))
+	return 1
+}
+
+func luaSetVAlign(L *lua.LState) int {
+	b := checkButton(L)
+	ud := L.ToUserData(2)
+	b.Button.SetVAlign(ud.Value.(gtk.Align))
 	return 1
 }
 

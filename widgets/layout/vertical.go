@@ -23,6 +23,8 @@ func RegisterVerticalType(L *lua.LState) int {
 
 var verticalMethods = map[string]lua.LGFunction{
 	"getParent": luaVGetParent,
+	"setHAlign": luaVSetHAlign,
+	"setVAlign": luaVSetVAlign,
 	"addWidget": luaVAddWidget,
 }
 
@@ -60,12 +62,25 @@ func checkVertical(L *lua.LState) *Vertical {
 	return nil
 }
 
-
 func luaVAddWidget(L *lua.LState) int {
 	v := checkVertical(L)
 	wt := L.CheckUserData(2).Value.(gtk.IWidget)
 	v.lay.Add(wt)
 	v.lay.Show()
+	return 1
+}
+
+func luaVSetHAlign(L *lua.LState) int {
+	v := checkVertical(L)
+	ud := L.ToUserData(2)
+	v.lay.SetHAlign(ud.Value.(gtk.Align))
+	return 1
+}
+
+func luaVSetVAlign(L *lua.LState) int {
+	v := checkVertical(L)
+	ud := L.ToUserData(2)
+	v.lay.SetVAlign(ud.Value.(gtk.Align))
 	return 1
 }
 

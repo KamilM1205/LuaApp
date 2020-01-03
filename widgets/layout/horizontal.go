@@ -23,6 +23,8 @@ func RegisterHorizontalType(L *lua.LState) int {
 
 var horizontalMethods = map[string]lua.LGFunction{
 	"getParent": luaHGetParent,
+	"setHAlign": luaHSetHAlign,
+	"setVAlign": luaHSetVAlign,
 	"addWidget": luaHAddWidget,
 }
 
@@ -55,6 +57,20 @@ func luaHAddWidget(L *lua.LState) int {
 	wt := L.CheckUserData(2).Value.(gtk.IWidget)
 	h.lay.Add(wt)
 	h.lay.Show()
+	return 1
+}
+
+func luaHSetHAlign(L *lua.LState) int {
+	h := checkHorizontal(L)
+	ud := L.ToUserData(2)
+	h.lay.SetHAlign(ud.Value.(gtk.Align))
+	return 1
+}
+
+func luaHSetVAlign(L *lua.LState) int {
+	h := checkHorizontal(L)
+	ud := L.ToUserData(2)
+	h.lay.SetVAlign(ud.Value.(gtk.Align))
 	return 1
 }
 
