@@ -12,6 +12,7 @@ var (
 	appName  string = "LuaApp"
 )
 
+//Init функция инициализации лог файла
 func Init() {
 	err := os.Remove(fileName)
 
@@ -27,6 +28,7 @@ func Init() {
 	defer file.Close()
 }
 
+//FatalMessage функция записи в лог сообщения о фатальной ошибке
 func FatalMessage(errMsg string) {
 	time := time.Now().Format("2006-01-02 15:04:05")
 	msg := appName + " " + time + " FATAL ERROR: " + errMsg
@@ -42,6 +44,7 @@ func FatalMessage(errMsg string) {
 	os.Exit(1)
 }
 
+//InfoMessage функция для записи в лог информации
 func InfoMessage(errMsg string) {
 	msg := appName + " INFO: " + errMsg
 	f, err := os.OpenFile(fileName,

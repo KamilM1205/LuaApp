@@ -99,6 +99,7 @@ func luaSetHAlign(L *lua.LState) int {
 	b := checkButton(L)
 	ud := L.ToUserData(2)
 	b.Button.SetHAlign(ud.Value.(gtk.Align))
+	b.Button.SetHExpand(true)
 	return 1
 }
 
@@ -106,6 +107,7 @@ func luaSetVAlign(L *lua.LState) int {
 	b := checkButton(L)
 	ud := L.ToUserData(2)
 	b.Button.SetVAlign(ud.Value.(gtk.Align))
+	b.Button.SetVExpand(true)
 	return 1
 }
 

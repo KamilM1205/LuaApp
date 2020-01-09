@@ -11,6 +11,6 @@ const (
 )
 
 //GetEngineVersion функция геттер для получения версии движка
-func GetEngineVersion() string{
+func GetEngineVersion() string {
 	return luaAppVersion
 }

@@ -5,6 +5,7 @@ import (
 	"./label"
 	"./layout"
 	"./edittext"
+	"./align"
 	lua "github.com/yuin/gopher-lua"
 )
 
@@ -15,5 +16,6 @@ func Loader(L *lua.LState) int {
 	layout.RegisterHorizontalType(L)
 	edittext.RegisterLineEditType(L)
 	edittext.RegisterMultilineEditType(L)
+	align.RegisterAlignType(L)
 	return 1
 }

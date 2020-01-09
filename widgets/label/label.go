@@ -59,6 +59,7 @@ func luaSetHAlign(L *lua.LState) int {
 	l := checkLabel(L)
 	ud := L.ToUserData(2)
 	l.Label.SetHAlign(ud.Value.(gtk.Align))
+	l.Label.SetHExpand(true)
 	return 1
 }
 
@@ -66,6 +67,7 @@ func luaSetVAlign(L *lua.LState) int {
 	l := checkLabel(L)
 	ud := L.ToUserData(2)
 	l.Label.SetVAlign(ud.Value.(gtk.Align))
+	l.Label.SetVExpand(true)
 	return 1
 }
 

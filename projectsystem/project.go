@@ -33,7 +33,7 @@ type App struct {
 
 const (
 	androidMain string = ``
-	pcMain string = `pc = require("pc")
+	pcMain      string = `pc = require("pc")
 
 	function Init()
 		pc.SetSize(800, 600)
@@ -42,7 +42,26 @@ const (
 	end
 	
 	pc.Init()`
-	coreMain string = ``
+	coreMain string = `gui = require("GUI")
+	widgets = require("Widgets")
+	
+	function btn_click(event)
+		print(event)
+	end
+	
+	function Init() 
+		screen = Screen.new()
+		v = Vertical.new()
+		v:setHAlign(Align.Fill)
+		v:setVAlign(Align.Fill)
+		label = Label.new("Hello, world")
+		label:setHAlign(Align.Center)
+		label:setVAlign(Align.Center)
+		v:addWidget(label:getParent())
+		screen:addWidget(v:getParent())
+		gui.setScreen(screen)
+	end
+	gui.Init()`
 )
 
 //NewProject функция для создания нового LuaApp проекта
@@ -56,10 +75,11 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 	if err != nil {
 		return err
 	}
-	file, err := os.Create("Projects/"+projectName+"/Core/" + "Core.lua") 
+	file, err := os.Create("Projects/" + projectName + "/Core/" + "Core.lua")
 	if err != nil {
 		return err
 	}
+	file.WriteString(coreMain)
 	file.Close()
 
 	if android {
@@ -67,10 +87,11 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 		if err != nil {
 			return err
 		}
-		file, err := os.Create("Projects/"+projectName+"/Android/" + "main.lua") 
+		file, err := os.Create("Projects/" + projectName + "/Android/" + "main.lua")
 		if err != nil {
 			return err
 		}
+		file.WriteString(androidMain)
 		file.Close()
 	}
 
@@ -79,10 +100,11 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 		if err != nil {
 			return err
 		}
-		file, err := os.Create("Projects/"+projectName+"/PC/" + "main.lua") 
+		file, err := os.Create("Projects/" + projectName + "/PC/" + "main.lua")
 		if err != nil {
 			return err
 		}
+		file.WriteString(pcMain)
 		file.Close()
 	}
 
@@ -97,7 +119,7 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	file.Close()
 
 	marshal, err := projectMarshal(projectName, projectVersion, android, pc, assets)
 	if err != nil {

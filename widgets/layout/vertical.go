@@ -74,13 +74,15 @@ func luaVSetHAlign(L *lua.LState) int {
 	v := checkVertical(L)
 	ud := L.ToUserData(2)
 	v.lay.SetHAlign(ud.Value.(gtk.Align))
+	v.lay.SetHExpand(true)
 	return 1
 }
 
 func luaVSetVAlign(L *lua.LState) int {
 	v := checkVertical(L)
 	ud := L.ToUserData(2)
-	v.lay.SetVAlign(ud.Value.(gtk.Align))
+	v.lay.SetVAlign(ud.Value.(gtk.Align))	
+	v.lay.SetVExpand(true)
 	return 1
 }
 

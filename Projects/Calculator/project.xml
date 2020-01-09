@@ -1,0 +1,13 @@
+ <project name="Calculator" version="1.0">
+     <LuaApp version="1.0b">
+         <use name="Android">
+             <Value>true</Value>
+         </use>
+         <use name="PC">
+             <Value>true</Value>
+         </use>
+         <use name="Assets">
+             <Value>false</Value>
+         </use>
+     </LuaApp>
+ </project>

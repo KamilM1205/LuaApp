@@ -83,7 +83,6 @@ func openProject() {
 			break
 		} else if cmd == "run" {
 			runProject(openProjectName)
-			break
 		}
 	}
 }
