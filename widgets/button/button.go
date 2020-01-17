@@ -30,6 +30,12 @@ var buttonMethods = map[string]lua.LGFunction{
 	"setClick":  luaSetClick,
 	"setHAlign": luaSetHAlign,
 	"setVAlign": luaSetVAlign,
+	"setMarginTop": luaSetMarginTop,
+	"setMarginBottom": luaSetMarginBottom,
+	"setMarginStart": luaSetMarginStart,
+	"setMarginEnd": luaSetMarginEnd,
+	"setWidth": luaSetWidth,
+	"setHeight": luaSetHeight,
 	"getParent": luaGetParent,
 	"setEnable": luaSetEnable,
 }
@@ -108,6 +114,42 @@ func luaSetVAlign(L *lua.LState) int {
 	ud := L.ToUserData(2)
 	b.Button.SetVAlign(ud.Value.(gtk.Align))
 	b.Button.SetVExpand(true)
+	return 1
+}
+
+func luaSetMarginTop(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.SetMarginTop(L.ToInt(2))
+	return 1
+}
+
+func luaSetMarginBottom(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.SetMarginBottom(L.ToInt(2))
+	return 1
+}
+
+func luaSetMarginStart(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.SetMarginStart(L.ToInt(2))
+	return 1
+}
+
+func luaSetMarginEnd(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.SetMarginEnd(L.ToInt(2))
+	return 1
+}
+
+func luaSetWidth(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.GetAllocation().SetWidth(L.ToInt(2))
+	return 1
+}
+
+func luaSetHeight(L *lua.LState) int {
+	b := checkButton(L)
+	b.Button.GetAllocation().SetHeight(L.ToInt(2))
 	return 1
 }
 

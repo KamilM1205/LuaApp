@@ -66,6 +66,58 @@ func luaMSetText(L *lua.LState) int{
 	return 1
 }
 
+func luaMSetHAlign(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	ud := L.ToUserData(2)
+	e.edit.SetHAlign(ud.Value.(gtk.Align))
+	e.edit.SetHExpand(true)
+	return 1
+}
+
+func luaMSetVAlign(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	ud := L.ToUserData(2)
+	e.edit.SetVAlign(ud.Value.(gtk.Align))
+	e.edit.SetVExpand(true)
+	return 1
+}
+
+func luaMSetMarginTop(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.SetMarginTop(L.ToInt(2))
+	return 1
+}
+
+func luaMSetMarginBottom(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.SetMarginBottom(L.ToInt(2))
+	return 1
+}
+
+func luaMSetMarginStart(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.SetMarginStart(L.ToInt(2))
+	return 1
+}
+
+func luaMSetMarginEnd(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.SetMarginEnd(L.ToInt(2))
+	return 1
+}
+
+func luaMSetWidth(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.GetAllocation().SetWidth(L.ToInt(2))
+	return 1
+}
+
+func luaMSetHeight(L *lua.LState) int {
+	e := checkMultilineEdit(L)
+	e.edit.GetAllocation().SetHeight(L.ToInt(2))
+	return 1
+}
+
 func luaMGetText(L *lua.LState) int{
 	e := checkMultilineEdit(L)
 	buff, _ := e.edit.GetBuffer()

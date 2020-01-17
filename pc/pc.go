@@ -9,7 +9,12 @@ import (
 
 var (
 	window *gtk.Window
+	path string
 )
+
+func Init(luaPath string) {
+	path = luaPath
+}
 
 func Loader(L *lua.LState) int {
 	mod := L.SetFuncs(L.NewTable(), exports)
@@ -23,6 +28,7 @@ var exports = map[string]lua.LGFunction{
 	"Init":     luaInit,
 	"SetSize":  luaSetSize,
 	"SetTitle": luaSetTitle,
+	"SetResizable": luaSetResizable,
 	"Run":      luaRun,
 }
 
@@ -57,6 +63,11 @@ func luaSetSize(L *lua.LState) int {
 	return 0
 }
 
+func luaSetResizable(L *lua.LState) int {
+	window.SetResizable(L.ToBool(1))
+	return 0
+}
+
 func luaSetTitle(L *lua.LState) int {
 	window.SetTitle(L.ToString(1))
 	return 0
@@ -64,7 +75,7 @@ func luaSetTitle(L *lua.LState) int {
 
 func luaRun(L *lua.LState) int {
 	window.ShowAll()
-	go core.Run(window)
+	go core.Run(window, path)
 	gtk.Main()
 	return 0
 }

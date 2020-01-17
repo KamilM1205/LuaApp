@@ -25,6 +25,12 @@ var horizontalMethods = map[string]lua.LGFunction{
 	"getParent": luaHGetParent,
 	"setHAlign": luaHSetHAlign,
 	"setVAlign": luaHSetVAlign,
+	"setMarginTop": luaHSetMarginTop,
+	"setMarginBottom": luaHSetMarginBottom,
+	"setMarginStart": luaHSetMarginStart,
+	"setMarginEnd": luaHSetMarginEnd,
+	"setWidth": luaHSetWidth,
+	"setHeight": luaHSetHeight,
 	"addWidget": luaHAddWidget,
 }
 
@@ -55,7 +61,7 @@ func checkHorizontal(L *lua.LState) *Horizontal {
 func luaHAddWidget(L *lua.LState) int {
 	h := checkHorizontal(L)
 	wt := L.CheckUserData(2).Value.(gtk.IWidget)
-	h.lay.Add(wt)
+	h.lay.Attach(wt, 1, 1, 1, 2)
 	h.lay.Show()
 	return 1
 }
@@ -71,6 +77,42 @@ func luaHSetVAlign(L *lua.LState) int {
 	h := checkHorizontal(L)
 	ud := L.ToUserData(2)
 	h.lay.SetVAlign(ud.Value.(gtk.Align))
+	return 1
+}
+
+func luaHSetMarginTop(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.SetMarginTop(L.ToInt(2))
+	return 1
+}
+
+func luaHSetMarginBottom(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.SetMarginBottom(L.ToInt(2))
+	return 1
+}
+
+func luaHSetMarginStart(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.SetMarginStart(L.ToInt(2))
+	return 1
+}
+
+func luaHSetMarginEnd(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.SetMarginEnd(L.ToInt(2))
+	return 1
+}
+
+func luaHSetWidth(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.GetAllocation().SetWidth(L.ToInt(2))
+	return 1
+}
+
+func luaHSetHeight(L *lua.LState) int {
+	h := checkHorizontal(L)
+	h.lay.GetAllocation().SetHeight(L.ToInt(2))
 	return 1
 }
 

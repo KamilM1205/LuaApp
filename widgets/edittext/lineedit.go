@@ -24,6 +24,14 @@ func RegisterLineEditType(L *lua.LState) int {
 var lEditMethods = map[string]lua.LGFunction{
 	"setEditable": luaLSetEditable,
 	"setText": luaLSetText,
+	"setHAlign": luaLSetHAlign,
+	"setVAlign": luaLSetVAlign,
+	"setMarginTop": luaLSetMarginTop,
+	"setMarginBottom": luaLSetMarginBottom,
+	"setMarginStart": luaLSetMarginStart,
+	"setMarginEnd": luaLSetMarginEnd,
+	"setWidth": luaLSetWidth,
+	"setHeight": luaLSetHeight,
 	"getText": luaLGetText,
 	"setMaxLength": luaLSetMaxLength,
 	"getParent": luaLGetParent,
@@ -63,6 +71,58 @@ func luaLSetEditable(L *lua.LState) int {
 func luaLSetText(L *lua.LState) int{
 	e := checkLineEdit(L)
 	e.edit.SetText(L.ToString(2))
+	return 1
+}
+
+func luaLSetHAlign(L *lua.LState) int {
+	e := checkLineEdit(L)
+	ud := L.ToUserData(2)
+	e.edit.SetHAlign(ud.Value.(gtk.Align))
+	e.edit.SetHExpand(true)
+	return 1
+}
+
+func luaLSetVAlign(L *lua.LState) int {
+	e := checkLineEdit(L)
+	ud := L.ToUserData(2)
+	e.edit.SetVAlign(ud.Value.(gtk.Align))
+	e.edit.SetVExpand(true)
+	return 1
+}
+
+func luaLSetMarginTop(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.SetMarginTop(L.ToInt(2))
+	return 1
+}
+
+func luaLSetMarginBottom(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.SetMarginBottom(L.ToInt(2))
+	return 1
+}
+
+func luaLSetMarginStart(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.SetMarginStart(L.ToInt(2))
+	return 1
+}
+
+func luaLSetMarginEnd(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.SetMarginEnd(L.ToInt(2))
+	return 1
+}
+
+func luaLSetWidth(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.GetAllocation().SetWidth(L.ToInt(2))
+	return 1
+}
+
+func luaLSetHeight(L *lua.LState) int {
+	e := checkLineEdit(L)
+	e.edit.GetAllocation().SetHeight(L.ToInt(2))
 	return 1
 }
 

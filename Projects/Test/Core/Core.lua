@@ -1,10 +1,6 @@
 gui = require("GUI")
 widgets = require("Widgets")
 
-function btn_click(event)
-    print(event)
-end
-
 function Init() 
     screen = Screen.new()
     v = Vertical.new()

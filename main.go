@@ -65,10 +65,12 @@ func newProject(projName string) {
 
 func runProject(projName string) {
 	utils.InfoMessage("Initializing...")
+	path := "Projects/" + projName
 	L := lua.NewState()
+	pc.Init(path)
 	L.PreloadModule("pc", pc.Loader)
 	utils.InfoMessage("Initialized!")
-	if err := L.DoFile("Projects/" + projName + "/PC/main.lua"); err != nil {
+	if err := L.DoFile(path + "/PC/main.lua"); err != nil {
 		utils.FatalMessage(err.Error())
 	}
 	defer L.Close()
@@ -91,7 +93,7 @@ func main() {
 	utils.Init()
 	if (len(os.Args) > 1) {
 		if os.Args[1] == "list" {
-			list, err := projectsystem.SearchProjects()
+			list, err := projectsystem.SearchProjects("Projects/")
 			if err != nil {
 				fmt.Println(err.Error())
 				os.Exit(1)
@@ -107,7 +109,7 @@ func main() {
 			}
 		} else if os.Args[1] == "open" {
 			if len(os.Args) > 2 && os.Args[2] != "" {
-				isProj, err := projectsystem.IsProject(os.Args[2])
+				isProj, err := projectsystem.IsProject("Projects/" + os.Args[2])
 				if err != nil {
 					fmt.Println(err.Error())
 					os.Exit(1)

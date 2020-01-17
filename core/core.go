@@ -19,7 +19,7 @@ func Stop() {
 	isRun = false
 }
 
-func Run(win *gtk.Window) {
+func Run(win *gtk.Window, path string) {
 	window = win
 	isRun = true
 
@@ -29,7 +29,7 @@ func Run(win *gtk.Window) {
 	gui.Init(win)
 	core.PreloadModule("GUI", gui.Loader)
 	utils.InfoMessage("Initialized!")
-	if err := core.DoFile("Projects/Test/Core/Core.lua"); err != nil {
+	if err := core.DoFile(path + "/Core/Core.lua"); err != nil {
 		utils.FatalMessage(err.Error())
 	}
 	for isRun {

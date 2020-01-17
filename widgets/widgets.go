@@ -2,6 +2,7 @@ package widgets
 
 import (
 	"./button"
+	"./menu"
 	"./label"
 	"./layout"
 	"./edittext"
@@ -17,5 +18,6 @@ func Loader(L *lua.LState) int {
 	edittext.RegisterLineEditType(L)
 	edittext.RegisterMultilineEditType(L)
 	align.RegisterAlignType(L)
+	menu.RegisterMenuType(L)
 	return 1
 }

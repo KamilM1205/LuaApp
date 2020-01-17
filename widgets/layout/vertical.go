@@ -8,7 +8,7 @@ import (
 
 //Vertical is struct of LuaApp vertical layout
 type Vertical struct {
-	lay   *gtk.Grid
+	lay   *gtk.Box
 }
 
 //RegisterVerticalType is func for register vertical layout
@@ -25,6 +25,12 @@ var verticalMethods = map[string]lua.LGFunction{
 	"getParent": luaVGetParent,
 	"setHAlign": luaVSetHAlign,
 	"setVAlign": luaVSetVAlign,
+	"setMarginTop": luaVSetMarginTop,
+	"setMarginBottom": luaVSetMarginBottom,
+	"setMarginStart": luaVSetMarginStart,
+	"setMarginEnd": luaVSetMarginEnd,
+	"setWidth": luaVSetWidth,
+	"setHeight": luaVSetHeight,
 	"addWidget": luaVAddWidget,
 }
 
@@ -39,11 +45,10 @@ func call(L *lua.LState, funcName string, arg string) {
 }
 
 func newVertical(L *lua.LState) int {
-	gtkVertical, err := gtk.GridNew()
+	gtkVertical, err := gtk.BoxNew(gtk.ORIENTATION_VERTICAL, 2)
 	if err != nil {
 		utils.FatalMessage(err.Error())
 	}
-	gtkVertical.SetOrientation(gtk.ORIENTATION_VERTICAL)
 
 	vertical := &Vertical{gtkVertical}
 	ud := L.NewUserData()
@@ -83,6 +88,42 @@ func luaVSetVAlign(L *lua.LState) int {
 	ud := L.ToUserData(2)
 	v.lay.SetVAlign(ud.Value.(gtk.Align))	
 	v.lay.SetVExpand(true)
+	return 1
+}
+
+func luaVSetMarginTop(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.SetMarginTop(L.ToInt(2))
+	return 1
+}
+
+func luaVSetMarginBottom(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.SetMarginBottom(L.ToInt(2))
+	return 1
+}
+
+func luaVSetMarginStart(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.SetMarginStart(L.ToInt(2))
+	return 1
+}
+
+func luaVSetMarginEnd(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.SetMarginEnd(L.ToInt(2))
+	return 1
+}
+
+func luaVSetWidth(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.GetAllocation().SetWidth(L.ToInt(2))
+	return 1
+}
+
+func luaVSetHeight(L *lua.LState) int {
+	v := checkVertical(L)
+	v.lay.GetAllocation().SetHeight(L.ToInt(2))
 	return 1
 }
 

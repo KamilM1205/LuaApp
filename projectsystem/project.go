@@ -23,6 +23,7 @@ type Project struct {
 	LuaApp      App
 }
 
+//Uses массив структур Use
 type Uses []Use
 
 //App структура xml которая хранит настройки движка
@@ -119,7 +120,7 @@ func NewProject(projectName string, projectVersion string, android bool, pc bool
 	if err != nil {
 		return err
 	}
-	file.Close()
+	defer file.Close()
 
 	marshal, err := projectMarshal(projectName, projectVersion, android, pc, assets)
 	if err != nil {
@@ -155,8 +156,9 @@ func OpenProject(filename string) (*Project, error) {
 	return project, err
 }
 
-func IsProject(projectName string) (bool, error) {
-	f, err := ioutil.ReadDir("Projects/" + projectName)
+//IsProject функция проверяющая является ли структура проектом
+func IsProject(projectPath string) (bool, error) {
+	f, err := ioutil.ReadDir(projectPath)
 	if err != nil {
 		return false, err
 	}
@@ -165,12 +167,12 @@ func IsProject(projectName string) (bool, error) {
 			return true, nil
 		}
 	}
-	return false, errors.New("The " + projectName + " directory does not have a project.xml file.")
+	return false, errors.New("The " + projectPath + " directory does not have a project.xml file.")
 }
 
 //SearchProjects функция, которая возвращает список проектов
-func SearchProjects() (*[]string, error) {
-	files, err := ioutil.ReadDir("Projects/")
+func SearchProjects(dir string) (*[]string, error) {
+	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +181,7 @@ func SearchProjects() (*[]string, error) {
 
 	for _, v := range files {
 		if v.IsDir() {
-			isProject, err := IsProject(v.Name())
+			isProject, err := IsProject(dir + v.Name())
 			if err != nil {
 				return nil, err
 			}
