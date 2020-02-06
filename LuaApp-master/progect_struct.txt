@@ -1,0 +1,8 @@
+-prog_folder
+    -PC
+        -main.lua
+    -Android
+        -main.lua
+    -Core
+        -lua files...
+    progect.xml    
